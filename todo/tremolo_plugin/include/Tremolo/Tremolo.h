@@ -51,9 +51,9 @@ public:
     }
   }
 
-  /*void setGain(float gain) {
-    Gain.setGainDecibels(gain);
-  }*/
+  void setMix(float mix) {
+    depth = (mix / 100.f) * 0.5f;
+  }
 
   void process(juce::AudioBuffer<float>& buffer) noexcept {
     updateLfoWaveform();
@@ -64,8 +64,7 @@ public:
       const auto lfoValue = getNextLfoValue();
 
       // calculate the modulation value
-      constexpr auto modulationDepth = 0.4f;
-      const auto modulationValue = (lfoValue * modulationDepth) + (1.f - modulationDepth);
+      const auto modulationValue = (lfoValue * depth) + (1.f - depth);
 
       // for each channel sample in the frame
       for (const auto channelIndex :
@@ -89,7 +88,7 @@ public:
   }
 
 private:
-  //juce::dsp::Gain<float> Gain;
+  float depth;
 
   static float triangle(float phase) {
     return std::abs(2 * phase / juce::MathConstants<float>::pi) - 1.f;
