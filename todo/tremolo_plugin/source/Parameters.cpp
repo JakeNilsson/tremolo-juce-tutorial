@@ -57,7 +57,7 @@ namespace tremolo {
     : rate{createModulationRateParameter(processor)},
       gain{createGainParameter(processor)},
       mix{createMixParameter(processor)},
-      bypass{createBypassParameter(processor)} //test
+      bypass{createBypassParameter(processor)} //test 2
   {
     juce::ignoreUnused(processor);
   }
