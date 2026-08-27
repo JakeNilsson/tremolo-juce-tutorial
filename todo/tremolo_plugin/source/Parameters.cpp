@@ -48,16 +48,25 @@ namespace tremolo {
         false);
       return addParameterToProcessor(processor, std::move(parameter));
     }
+
+    juce::AudioParameterChoice& createWaveformParameter(juce::AudioProcessor& processor) {
+      constexpr auto versionHint = 1;
+      auto parameter = std::make_unique<juce::AudioParameterChoice>(
+        juce::ParameterID{"mosulation.waveform", versionHint},
+        "Waveform",
+        juce::StringArray{"Sine", "Triangle"},
+        0
+        );
+      return addParameterToProcessor(processor, std::move(parameter));
+    }
   }
 
   Parameters::Parameters(juce::AudioProcessor& processor)
-  // TODO: create parameters
-  // TODO: retrieve references to parameters
-  // TODO: add parameters to the processor
     : rate{createModulationRateParameter(processor)},
       gain{createGainParameter(processor)},
       mix{createMixParameter(processor)},
-      bypass{createBypassParameter(processor)} //test 2
+      bypass{createBypassParameter(processor)},
+      waveform{createWaveformParameter(processor)}
   {
     juce::ignoreUnused(processor);
   }
