@@ -7,7 +7,7 @@ TEST(JsonSerializer, SerializeToString) {
   auto& parameters = processor.getParameterRefs();
 
   parameters.rate = 10.f;
-  parameters.bypassed = true;
+  parameters.bypass = true;
   parameters.waveform = 1;
 
   const juce::String expectedOutput =
@@ -15,7 +15,7 @@ TEST(JsonSerializer, SerializeToString) {
   "__version__": 1,
   "pluginName": "Tremolo",
   "modulationRateHz": 10.0,
-  "bypassed": true,
+  "bypass": true,
   "modulationWaveform": "Triangle"
 })";
   juce::MemoryBlock block;
@@ -35,7 +35,7 @@ TEST(JsonSerializer, DeserializeFromString) {
   "__version__": 1,
   "pluginName": "Tremolo",
   "modulationRateHz": 10.0,
-  "bypassed": true,
+  "bypass": true,
   "modulationWaveform": "Triangle"
 })";
 
@@ -50,7 +50,7 @@ TEST(JsonSerializer, DeserializeFromString) {
 
   EXPECT_TRUE(result.wasOk());
   EXPECT_FLOAT_EQ(parameters.rate, 10.f);
-  EXPECT_TRUE(parameters.bypassed);
+  EXPECT_TRUE(parameters.bypass);
   EXPECT_EQ(juce::String{"Triangle"},
             parameters.waveform.getCurrentChoiceName());
 }
@@ -62,7 +62,7 @@ TEST(JsonSerializer, DontUpdateParametersWhenWaveformNameIsInvalid) {
   "__version__": 1,
   "pluginName": "Tremolo",
   "modulationRateHz": 10.0,
-  "bypassed": true,
+  "bypass": true,
   "modulationWaveform": "Foo"
 })";
 
@@ -74,7 +74,7 @@ TEST(JsonSerializer, DontUpdateParametersWhenWaveformNameIsInvalid) {
   auto& parameters = processor.getParameterRefs();
 
   parameters.waveform = 0;
-  parameters.bypassed = false;
+  parameters.bypass = false;
   parameters.rate = 5.f;
 
   // when
@@ -83,7 +83,7 @@ TEST(JsonSerializer, DontUpdateParametersWhenWaveformNameIsInvalid) {
   // then
   EXPECT_TRUE(result.failed());
   EXPECT_FLOAT_EQ(parameters.rate.get(), 5.f);
-  EXPECT_FALSE(parameters.bypassed.get());
+  EXPECT_FALSE(parameters.bypass.get());
   EXPECT_EQ(0, parameters.waveform.getIndex());
 }
 }  // namespace tremolo
