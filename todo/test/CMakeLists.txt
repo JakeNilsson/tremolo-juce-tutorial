@@ -37,6 +37,7 @@ add_executable(TremoloCoursePluginTest
   source/PluginProcessorTest.cpp
   source/JsonSerializerTest.cpp
   source/TremoloTest.cpp
+        ../tremolo_plugin/include/Tremolo/LfoVisualizer.h
 )
 
 # Configuration options that apply to the JUCE sources in the test target

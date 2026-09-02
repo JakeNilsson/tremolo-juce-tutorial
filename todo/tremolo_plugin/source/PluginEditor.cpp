@@ -1,24 +1,38 @@
 namespace tremolo {
-PluginEditor::PluginEditor(PluginProcessor& p) : AudioProcessorEditor(&p) {
-  background.setImage(juce::ImageCache::getFromMemory(
-      assets::Background_png, assets::Background_pngSize));
+    PluginEditor::PluginEditor(PluginProcessor& p) : AudioProcessorEditor(&p) {
+        background.setImage(juce::ImageCache::getFromMemory(
+            assets::Background_png, assets::Background_pngSize));
 
-  logo.setImage(
-      juce::ImageCache::getFromMemory(assets::Logo_png, assets::Logo_pngSize));
+        leftLogo.setImage(
+            juce::ImageCache::getFromMemory(assets::Logo_png, assets::Logo_pngSize));
 
-  addAndMakeVisible(background);
-  addAndMakeVisible(logo);
+        midLogo.setImage(
+            juce::ImageCache::getFromMemory(assets::Logo_png, assets::Logo_pngSize));
 
-  // Make sure that before the constructor has finished, you've set the
-  // editor's size to whatever you need it to be.
-  setSize(540, 270);
-}
+        rightLogo.setImage(
+            juce::ImageCache::getFromMemory(assets::Logo_png, assets::Logo_pngSize));
 
-void PluginEditor::resized() {
-  const auto bounds = getLocalBounds();
+        addAndMakeVisible(background);
+        addAndMakeVisible(leftLogo);
+        addAndMakeVisible(midLogo);
+        addAndMakeVisible(rightLogo);
 
-  background.setBounds(bounds);
+        addAndMakeVisible(lfoVisualizer);
 
-  logo.setBounds({16, 16, 105, 24});
-}
+        // Make sure that before the constructor has finished, you've set the
+        // editor's size to whatever you need it to be.
+        setSize(540, 270);
+    }
+
+    void PluginEditor::resized() {
+        const auto bounds = getLocalBounds();
+
+        background.setBounds(bounds);
+
+        leftLogo.setBounds({16, 16, 105, 24});
+        midLogo.setBounds({217, 16, 105, 24});
+        rightLogo.setBounds({419, 16, 105, 24});
+
+        lfoVisualizer.setBounds({18, 149, 504, 92});
+    }
 }  // namespace tremolo
