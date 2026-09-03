@@ -34,5 +34,8 @@ namespace tremolo {
         rightLogo.setBounds({419, 16, 105, 24});
 
         lfoVisualizer.setBounds({18, 149, 504, 92});
+        lfoVisualizer.setPath(2);
+
+        //lfoVisualizer
     }
 }  // namespace tremolo

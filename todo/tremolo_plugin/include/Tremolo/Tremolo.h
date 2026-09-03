@@ -10,6 +10,10 @@ public:
     triangle = 1,
   };
 
+  static float triangle(float phase) {
+    return std::abs(2 * phase / juce::MathConstants<float>::pi) - 1.f;
+  }
+
   Tremolo() { setModulationRateHz(5.f, ApplySmoothing::no); }
 
   void prepare(double sampleRate, int expectedMaxFramesPerBlock) {
@@ -89,10 +93,6 @@ public:
 
 private:
   float depth;
-
-  static float triangle(float phase) {
-    return std::abs(2 * phase / juce::MathConstants<float>::pi) - 1.f;
-  }
 
   float getNextLfoValue() {
     if (lfoTransitionSmoother.isSmoothing()) {
