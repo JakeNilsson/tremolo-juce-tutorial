@@ -17,21 +17,59 @@ namespace tremolo {
         addAndMakeVisible(midLogo);
         addAndMakeVisible(rightLogo);
 
+        rateSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+        rateSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
+        rateSlider.setPopupDisplayEnabled(true, true, this);
+        rateSlider.setRange(1, 30, 0.5);
+        rateSlider.onValueChange = [this] {
+            DBG("Rate Slider Value: " << rateSlider.getValue());
+        };
+        rateSlider.setTextValueSuffix(" Hz");
+        addAndMakeVisible(rateSlider);
+
+        widthSlider.setRange(1, 10, 1);
+        widthSlider.setValue(2);
+        widthSlider.onValueChange = [this] {
+            lfoVisualizer.setPath(widthSlider.getValue());
+            lfoVisualizer.repaint();
+        };
+        addAndMakeVisible(widthSlider);
+
         addAndMakeVisible(lfoVisualizer);
 
         // Make sure that before the constructor has finished, you've set the
         // editor's size to whatever you need it to be.
-        setSize(540, 270);
+        setSize(540, 300);
+    }
+
+    juce::Rectangle<int> PluginEditor::setInversePos(juce::Rectangle<int> parentDimensions,
+                                                  int left,
+                                                  int right,
+                                                  int top,
+                                                  int bottom) {
+        auto bounds = parentDimensions;
+
+        bounds.removeFromLeft(left);
+        bounds.removeFromRight(right);
+        bounds.removeFromTop(top);
+        bounds.removeFromBottom(bottom);
+
+        return bounds;
     }
 
     void PluginEditor::resized() {
         const auto bounds = getLocalBounds();
 
-        background.setBounds(bounds);
+        background.setBounds({0, 0, 540, 270});
 
         leftLogo.setBounds({16, 16, 105, 24});
         midLogo.setBounds({217, 16, 105, 24});
         rightLogo.setBounds({419, 16, 105, 24});
+
+        auto rateSliderBounds = setInversePos(getLocalBounds(), 230, 230, 40, 175);
+        rateSlider.setBounds({rateSliderBounds});
+
+        widthSlider.setBounds({16, 271, 270, 30});
 
         lfoVisualizer.setBounds({18, 149, 504, 92});
         lfoVisualizer.setPath(2);
