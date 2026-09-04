@@ -118,6 +118,8 @@ void PluginProcessor::processBlock(juce::AudioBuffer<float>& buffer,
 
   buffer.applyGain(juce::Decibels::decibelsToGain(parameters.gain.get()));
 
+  //DBG("Rate Parameter Changed to" << parameters.rate.get());
+
   if (parameters.bypass.get() && !bypassTransitionSmoother.isTransitioning()) {
     return;
   }

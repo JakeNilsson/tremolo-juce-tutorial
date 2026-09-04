@@ -16,6 +16,11 @@ private:
   juce::ImageComponent rightLogo;
 
   juce::Slider rateSlider;
+  juce::SliderParameterAttachment rateAttachment;
+
+  juce::Slider mixSlider;
+  juce::SliderParameterAttachment mixAttachment;
+
   juce::Slider widthSlider;
 
   LfoVisualizer lfoVisualizer;

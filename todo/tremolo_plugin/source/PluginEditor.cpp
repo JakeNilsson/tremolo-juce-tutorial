@@ -1,5 +1,8 @@
 namespace tremolo {
-    PluginEditor::PluginEditor(PluginProcessor& p) : AudioProcessorEditor(&p) {
+    PluginEditor::PluginEditor(PluginProcessor& p) : AudioProcessorEditor(&p),
+        rateAttachment{p.getParameterRefs().rate, rateSlider},
+        mixAttachment{p.getParameterRefs().mix, mixSlider}{
+
         background.setImage(juce::ImageCache::getFromMemory(
             assets::Background_png, assets::Background_pngSize));
 
@@ -20,12 +23,14 @@ namespace tremolo {
         rateSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
         rateSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
         rateSlider.setPopupDisplayEnabled(true, true, this);
-        rateSlider.setRange(1, 30, 0.5);
-        rateSlider.onValueChange = [this] {
-            DBG("Rate Slider Value: " << rateSlider.getValue());
-        };
         rateSlider.setTextValueSuffix(" Hz");
         addAndMakeVisible(rateSlider);
+
+        mixSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+        mixSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
+        mixSlider.setPopupDisplayEnabled(true, true, this);
+        mixSlider.setTextValueSuffix("%");
+        addAndMakeVisible(mixSlider);
 
         widthSlider.setRange(1, 10, 1);
         widthSlider.setValue(2);
@@ -68,6 +73,9 @@ namespace tremolo {
 
         auto rateSliderBounds = setInversePos(getLocalBounds(), 230, 230, 40, 175);
         rateSlider.setBounds({rateSliderBounds});
+
+        auto mixSliderBounds = setInversePos(getLocalBounds(), 330, 130, 40, 175);
+        mixSlider.setBounds({mixSliderBounds});
 
         widthSlider.setBounds({16, 271, 270, 30});
 
