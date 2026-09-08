@@ -43,3 +43,4 @@ END_JUCE_MODULE_DECLARATION
 #include "include/Tremolo/BypassTransitionSmoother.h"
 #include "include/Tremolo/PluginProcessor.h"
 #include "include/Tremolo/PluginEditor.h"
+#include "include/Tremolo/RateSlider.h"

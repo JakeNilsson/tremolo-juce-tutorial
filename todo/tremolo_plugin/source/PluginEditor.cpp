@@ -1,7 +1,10 @@
 namespace tremolo {
     PluginEditor::PluginEditor(PluginProcessor& p) : AudioProcessorEditor(&p),
         rateAttachment{p.getParameterRefs().rate, rateSlider},
-        mixAttachment{p.getParameterRefs().mix, mixSlider}{
+        mixAttachment{p.getParameterRefs().mix, mixSlider},
+        bypassAttachment{p.getParameterRefs().bypass, bypassButton},
+        waveformAttachment{p.getParameterRefs().waveform, waveformComboBox}
+        {
 
         background.setImage(juce::ImageCache::getFromMemory(
             assets::Background_png, assets::Background_pngSize));
@@ -19,6 +22,8 @@ namespace tremolo {
         addAndMakeVisible(leftLogo);
         addAndMakeVisible(midLogo);
         addAndMakeVisible(rightLogo);
+
+        addAndMakeVisible(waveformComboBox);
 
         rateSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
         rateSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
@@ -40,11 +45,23 @@ namespace tremolo {
         };
         addAndMakeVisible(widthSlider);
 
+        bypassButton.onClick = [this]() {
+            bypassButton.setButtonText(bypassButton.getToggleState() ? "Bypass On" : "Bypass Off");
+        };
+        bypassButton.onClick();
+        addAndMakeVisible(bypassButton);
+
         addAndMakeVisible(lfoVisualizer);
+
+        setLookAndFeel(&lookAndFeel);
 
         // Make sure that before the constructor has finished, you've set the
         // editor's size to whatever you need it to be.
         setSize(540, 300);
+    }
+
+    PluginEditor::~PluginEditor() {
+        setLookAndFeel(nullptr);
     }
 
     juce::Rectangle<int> PluginEditor::setInversePos(juce::Rectangle<int> parentDimensions,
@@ -71,11 +88,17 @@ namespace tremolo {
         midLogo.setBounds({217, 16, 105, 24});
         rightLogo.setBounds({419, 16, 105, 24});
 
+        auto waveformComboBoxBounds = setInversePos(getLocalBounds(), 16, 392, 66, 206);
+        waveformComboBox.setBounds(waveformComboBoxBounds);
+
         auto rateSliderBounds = setInversePos(getLocalBounds(), 230, 230, 40, 175);
         rateSlider.setBounds({rateSliderBounds});
 
-        auto mixSliderBounds = setInversePos(getLocalBounds(), 330, 130, 40, 175);
-        mixSlider.setBounds({mixSliderBounds});
+        //auto mixSliderBounds = setInversePos(getLocalBounds(), 330, 130, 40, 175);
+        //mixSlider.setBounds({mixSliderBounds});
+
+        auto bypassButtonBounds = setInversePos(getLocalBounds(), 392, 16, 66, 206);
+        bypassButton.setBounds({bypassButtonBounds});
 
         widthSlider.setBounds({16, 271, 270, 30});
 
