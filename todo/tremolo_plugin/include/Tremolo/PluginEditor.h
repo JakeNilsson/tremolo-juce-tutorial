@@ -17,23 +17,32 @@ private:
   juce::ImageComponent midLogo;
   juce::ImageComponent rightLogo;
 
+  juce::Label waveformLabel{"waveform label", "Waveform"};
   juce::ComboBox waveformComboBox;
   juce::ComboBoxParameterAttachment waveformAttachment;
 
+  juce::Label rateLabel{"rate label", "Rate"};
   juce::Slider rateSlider;
   juce::SliderParameterAttachment rateAttachment;
 
   juce::Slider mixSlider;
   juce::SliderParameterAttachment mixAttachment;
 
-  juce::Slider widthSlider;
-
+  juce::Label bypassLabel{"bypass label", "Bypass"};
   juce::ToggleButton bypassButton;
   juce::ButtonParameterAttachment bypassAttachment;
 
+  juce::Slider widthSlider;
+
+  juce::ComboBox lookAndFeelComboBox;
+
   LfoVisualizer lfoVisualizer;
 
-  CustomLookAndFeel lookAndFeel;
+  juce::LookAndFeel_V1 lookAndFeelv1;
+  juce::LookAndFeel_V2 lookAndFeelv2;
+  juce::LookAndFeel_V3 lookAndFeelv3;
+  juce::LookAndFeel_V4 lookAndFeelv4;
+  CustomLookAndFeel lookAndFeelCustom;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PluginEditor)
 };
