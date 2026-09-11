@@ -23,19 +23,21 @@ namespace tremolo {
         addAndMakeVisible(midLogo);
         addAndMakeVisible(rightLogo);
 
+        waveformLabel.setFont(lookAndFeelCustom.getInterMedium());
         addAndMakeVisible(waveformLabel);
         waveformComboBox.addItemList(p.getParameterRefs().waveform.choices, 1);
         waveformAttachment.sendInitialUpdate();
         addAndMakeVisible(waveformComboBox);
 
-        rateLabel.setJustificationType(juce::Justification::centred);
-        rateLabel.setInterceptsMouseClicks(false, false);
-        addAndMakeVisible(rateLabel);
         rateSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
         rateSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
         rateSlider.setPopupDisplayEnabled(true, true, this);
         rateSlider.setTextValueSuffix(" Hz");
         addAndMakeVisible(rateSlider);
+        rateLabel.setJustificationType(juce::Justification::centred);
+        rateLabel.setInterceptsMouseClicks(false, false);
+        rateLabel.setFont(lookAndFeelCustom.getInterBold());
+        addAndMakeVisible(rateLabel);
 
         mixSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
         mixSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
@@ -43,6 +45,7 @@ namespace tremolo {
         mixSlider.setTextValueSuffix("%");
         addAndMakeVisible(mixSlider);
 
+        bypassLabel.setFont(lookAndFeelCustom.getInterMedium());
         addAndMakeVisible(bypassLabel);
         bypassButton.onClick = [this]() {
             bypassButton.setButtonText(bypassButton.getToggleState() ? "On" : "Off");

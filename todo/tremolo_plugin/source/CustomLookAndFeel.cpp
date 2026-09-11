@@ -39,7 +39,37 @@ namespace tremolo {
 
             g.setColour(juce::Colour{0xFFDDECFF});
         }
-
+        g.setFont(interBold().withPointHeight(12.f));
         g.drawText(button.getButtonText(), bounds, juce::Justification::centred, false);
+    }
+    void CustomLookAndFeel::drawRotarySlider(juce::Graphics &g, int x, int y, int width, int height, float sliderPosProportional, float rotaryStartAngle, float rotaryEndAngle, juce::Slider &) {
+        auto bounds = juce::Rectangle(x, y, width, height).toFloat().reduced(3.75f);
+        g.setColour(juce::Colour{0xFF2A3A3B});
+        g.fillEllipse(bounds);
+
+        juce::Path valueArc;
+        auto toAngle = rotaryStartAngle + sliderPosProportional * (rotaryEndAngle - rotaryStartAngle);
+        valueArc.addPieSegment(bounds.reduced(0.25f),
+                               rotaryStartAngle,
+                               toAngle,
+                               0.f);
+
+        g.setColour (juce::Colour{0xFFFFAA00});
+        g.fillPath (valueArc);
+
+    }
+    juce::FontOptions CustomLookAndFeel::interMedium() {
+        static const auto medium = juce::Typeface::createSystemTypefaceFor(
+            assets::InterMedium_ttf,
+            assets::InterMedium_ttfSize);
+
+        return juce::FontOptions{medium};
+    }
+    juce::FontOptions CustomLookAndFeel::interBold() {
+        static const auto bold = juce::Typeface::createSystemTypefaceFor(
+            assets::InterBold_ttf,
+            assets::InterBold_ttfSize);
+
+        return juce::FontOptions{bold};
     }
 }  // namespace tremolo
