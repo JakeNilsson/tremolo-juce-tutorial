@@ -130,7 +130,7 @@ namespace tremolo {
         auto waveformLabelBounds = waveformComboBoxBounds.translated(0, -waveformComboBoxBounds.getHeight());
         waveformLabel.setBounds(waveformLabelBounds);
 
-        auto rateSliderBounds = setInversePos(getLocalBounds(), 230, 230, 40, 175);
+        auto rateSliderBounds = setInversePos(getLocalBounds(), 230, 230, 50, 170); //80
         rateSlider.setBounds({rateSliderBounds});
         rateLabel.setBounds({rateSliderBounds});
 

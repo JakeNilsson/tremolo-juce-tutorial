@@ -57,6 +57,37 @@ namespace tremolo {
         g.setColour (juce::Colour{0xFFFFAA00});
         g.fillPath (valueArc);
 
+        bounds.reduce(4.f, 4.f);
+        auto knobBorderGradient = juce::ColourGradient::vertical(juce::Colour{0xFF4A7090},
+                                                               juce::Colour{0xFF060F1C}, bounds);
+        knobBorderGradient.addColour(0.33f, juce::Colour{0xFF396086});
+        knobBorderGradient.addColour(0.66f, juce::Colour{0xFF2C3648});
+        g.setGradientFill(knobBorderGradient);
+        g.fillEllipse(bounds);
+
+        bounds.reduce(1.5f, 1.5f);
+        g.setColour(juce::Colour{0x08EFC833});
+        g.fillEllipse(bounds);
+
+        bounds.reduce(5.5f, 5.5f);
+        g.setGradientFill({juce::Colour{0xFF648BBC},
+                                 bounds.getCentreX(),
+                                 0.0f,
+                                 juce::Colour{0xFF22364D}, //0xFF233750
+                                 bounds.getCentreX(),
+                                 bounds.getBottom(),
+                                 true});
+        g.fillEllipse(bounds);
+
+        g.setColour(juce::Colour{0x0AEFF3F6});
+        g.fillEllipse(bounds);
+
+        bounds.reduce(-0.5f, -0.5f);
+        auto topKnobBorderGradient = juce::ColourGradient::vertical(juce::Colour{0x1A8FFFFF},
+                                                              juce::Colour{0x1A1A0F4E}, bounds);
+        topKnobBorderGradient.addColour(0.5f, juce::Colour{0x1A8078F4});
+        g.setGradientFill(topKnobBorderGradient);
+        g.drawEllipse(bounds, 1);
     }
     juce::FontOptions CustomLookAndFeel::interMedium() {
         static const auto medium = juce::Typeface::createSystemTypefaceFor(
