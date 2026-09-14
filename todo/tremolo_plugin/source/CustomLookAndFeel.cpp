@@ -1,4 +1,32 @@
 namespace tremolo {
+    namespace {
+        void drawButtonInset(juce::Graphics &g, const juce::Rectangle<int> borderBounds) {
+            auto boxBorderGradient = juce::ColourGradient::vertical(juce::Colour{0xFF22232C},
+                                                                    juce::Colour{0xFF263235},
+                                                                    borderBounds);
+            boxBorderGradient.addColour(0.35, juce::Colour{0xFF303538});
+            g.setGradientFill(boxBorderGradient);
+            g.fillRoundedRectangle(borderBounds.toFloat(), 6.f);
+        }
+    }
+
+    CustomLookAndFeel::CustomLookAndFeel() {
+        setColour(juce::PopupMenu::backgroundColourId, juce::Colour{0xFF153245});
+        setColour(juce::PopupMenu::textColourId, getColour(Colours::paleBlue));
+        setColour(juce::PopupMenu::highlightedBackgroundColourId, getColour(Colours::orange));
+        setColour(juce::PopupMenu::highlightedTextColourId, juce::Colour{0xFF0C131E});
+        setColour(juce::ComboBox::textColourId, getColour(Colours::paleBlue));
+        setColour(juce::Label::textColourId, juce::Colour{0xFF6EA0C7});
+    }
+
+    juce::Colour CustomLookAndFeel::getColour(Colours colourName) {
+        static const std::array colours{
+            juce::Colour{0xFFDDECFF},
+            juce::Colour{0xFFFFAA00}
+        };
+        return colours.at(juce::toUnderlyingType(colourName));
+    }
+
     void CustomLookAndFeel::drawToggleButton(juce::Graphics& g,
                                              juce::ToggleButton& button,
                                              bool shouldDrawButtonAsHighlighted,
@@ -12,12 +40,7 @@ namespace tremolo {
         const auto bounds = button.getLocalBounds().reduced(2);
         const auto borderBounds = button.getLocalBounds();
 
-        auto buttonBorderGradient = juce::ColourGradient::vertical(juce::Colour{0xFF22232C},
-                                                                   juce::Colour{0xFF263235},
-                                                                   borderBounds);
-        buttonBorderGradient.addColour(0.35, juce::Colour{0xFF303538});
-        g.setGradientFill(buttonBorderGradient);
-        g.fillRoundedRectangle(borderBounds.toFloat(), 6.f);
+        drawButtonInset(g, borderBounds);
 
         if(button.getToggleState()) {
             auto buttonGradient = juce::ColourGradient::vertical(juce::Colour::fromRGBA(0xFF, 0x90, 0x1A, alpha),
@@ -37,7 +60,7 @@ namespace tremolo {
             g.setGradientFill(buttonGradient);
             g.fillRoundedRectangle(bounds.toFloat(), 4.f);
 
-            g.setColour(juce::Colour{0xFFDDECFF});
+            g.setColour(getColour(Colours::paleBlue));
         }
         g.setFont(interBold().withPointHeight(12.f));
         g.drawText(button.getButtonText(), bounds, juce::Justification::centred, false);
@@ -54,7 +77,7 @@ namespace tremolo {
                                toAngle,
                                0.f);
 
-        g.setColour (juce::Colour{0xFFFFAA00});
+        g.setColour (getColour(Colours::orange));
         g.fillPath (valueArc);
 
         bounds.reduce(4.f, 4.f);
@@ -89,6 +112,28 @@ namespace tremolo {
         g.setGradientFill(topKnobBorderGradient);
         g.drawEllipse(bounds, 1);
     }
+
+    void CustomLookAndFeel::drawComboBox(juce::Graphics &g, int width, int height, bool isButtonDown, int buttonX, int buttonY, int buttonW, int buttonH, juce::ComboBox &box) {
+        auto alpha = 255;
+
+        //if (shouldDrawButtonAsHighlighted) {
+        //    alpha *= 0.7f;
+        //}
+
+        const auto bounds = box.getLocalBounds().reduced(2);
+        const auto borderBounds = box.getLocalBounds();
+
+        drawButtonInset(g, borderBounds);
+
+        auto boxGradient = juce::ColourGradient::vertical(juce::Colour::fromRGBA(0x4A, 0x70, 0x90, alpha),
+                                                             juce::Colour::fromRGBA(0x32, 0x42, 0x58, alpha),
+                                                             bounds);
+
+        boxGradient.addColour(0.73, juce::Colour{0xFF315160});
+        g.setGradientFill(boxGradient);
+        g.fillRoundedRectangle(bounds.toFloat(), 4.f);
+    }
+
     juce::FontOptions CustomLookAndFeel::interMedium() {
         static const auto medium = juce::Typeface::createSystemTypefaceFor(
             assets::InterMedium_ttf,

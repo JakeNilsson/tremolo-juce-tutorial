@@ -9,7 +9,7 @@ namespace tremolo {
     class LfoVisualizer : public juce::Component {
     public:
         void paint(juce::Graphics& g) override {
-            g.setColour(juce::Colours::orange);
+            g.setColour(CustomLookAndFeel::getColour(CustomLookAndFeel::Colours::orange));
             g.strokePath(waveform, juce::PathStrokeType{strokeWidth});
         }
         void setStrokeWidth(float width) {

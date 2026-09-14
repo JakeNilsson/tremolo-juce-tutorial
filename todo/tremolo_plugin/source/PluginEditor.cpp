@@ -37,6 +37,7 @@ namespace tremolo {
         rateLabel.setJustificationType(juce::Justification::centred);
         rateLabel.setInterceptsMouseClicks(false, false);
         rateLabel.setFont(lookAndFeelCustom.getInterBold());
+        rateLabel.setColour(juce::Label::textColourId, CustomLookAndFeel::getColour(CustomLookAndFeel::Colours::paleBlue));
         addAndMakeVisible(rateLabel);
 
         mixSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
