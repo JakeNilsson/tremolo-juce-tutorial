@@ -11,10 +11,18 @@ public:
     };
 
     static juce::Colour getColour(Colours colourName);
+
     void drawToggleButton(juce::Graphics &, juce::ToggleButton &, bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown) override;
     void drawRotarySlider(juce::Graphics &, int x, int y, int width, int height, float sliderPosProportional, float rotaryStartAngle, float rotaryEndAngle, juce::Slider &) override;
 
     void drawComboBox(juce::Graphics &, int width, int height, bool isButtonDown, int buttonX, int buttonY, int buttonW, int buttonH, juce::ComboBox &) override;
+    void positionComboBoxText(juce::ComboBox &, juce::Label &labelToPosition) override;
+    juce::PopupMenu::Options getOptionsForComboBoxPopupMenu(juce::ComboBox &, juce::Label &) override;
+    juce::Font getPopupMenuFont() override;
+    juce::Path getTickShape(float height) override {
+        return {};
+    };
+
     static juce::FontOptions getInterMedium() {
         return interMedium().withPointHeight(10.f);
     }

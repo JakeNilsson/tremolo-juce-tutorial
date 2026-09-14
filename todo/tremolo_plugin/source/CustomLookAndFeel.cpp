@@ -8,6 +8,16 @@ namespace tremolo {
             g.setGradientFill(boxBorderGradient);
             g.fillRoundedRectangle(borderBounds.toFloat(), 6.f);
         }
+
+        void drawBlueGradientButton(juce::Graphics &g, int alpha, const juce::Rectangle<int> bounds) {
+            auto buttonGradient = juce::ColourGradient::vertical(juce::Colour::fromRGBA(0x4A, 0x70, 0x90, alpha),
+                                                                 juce::Colour::fromRGBA(0x32, 0x42, 0x58, alpha),
+                                                                 bounds);
+
+            buttonGradient.addColour(0.73, juce::Colour{0xFF315160});
+            g.setGradientFill(buttonGradient);
+            g.fillRoundedRectangle(bounds.toFloat(), 4.f);
+        }
     }
 
     CustomLookAndFeel::CustomLookAndFeel() {
@@ -41,27 +51,10 @@ namespace tremolo {
         const auto borderBounds = button.getLocalBounds();
 
         drawButtonInset(g, borderBounds);
+        drawBlueGradientButton(g, alpha, bounds);
 
-        if(button.getToggleState()) {
-            auto buttonGradient = juce::ColourGradient::vertical(juce::Colour::fromRGBA(0xFF, 0x90, 0x1A, alpha),
-                                                                 juce::Colour::fromRGBA(0xFF, 0xC3, 0x00, alpha),
-                                                                 bounds);
+        g.setColour(button.getToggleState() ? juce::Colour{0xFF501A0B} : getColour(Colours::paleBlue));
 
-            g.setGradientFill(buttonGradient);
-            g.fillRoundedRectangle(bounds.toFloat(), 4.f);
-
-            g.setColour(juce::Colour{0xFF501A0B});
-        } else {
-            auto buttonGradient = juce::ColourGradient::vertical(juce::Colour::fromRGBA(0x4A, 0x70, 0x90, alpha),
-                                                                 juce::Colour::fromRGBA(0x32, 0x42, 0x58, alpha),
-                                                                 bounds);
-
-            buttonGradient.addColour(0.73, juce::Colour{0xFF315160});
-            g.setGradientFill(buttonGradient);
-            g.fillRoundedRectangle(bounds.toFloat(), 4.f);
-
-            g.setColour(getColour(Colours::paleBlue));
-        }
         g.setFont(interBold().withPointHeight(12.f));
         g.drawText(button.getButtonText(), bounds, juce::Justification::centred, false);
     }
@@ -124,6 +117,7 @@ namespace tremolo {
         const auto borderBounds = box.getLocalBounds();
 
         drawButtonInset(g, borderBounds);
+        drawBlueGradientButton(g, alpha, bounds);
 
         auto boxGradient = juce::ColourGradient::vertical(juce::Colour::fromRGBA(0x4A, 0x70, 0x90, alpha),
                                                              juce::Colour::fromRGBA(0x32, 0x42, 0x58, alpha),
@@ -132,6 +126,37 @@ namespace tremolo {
         boxGradient.addColour(0.73, juce::Colour{0xFF315160});
         g.setGradientFill(boxGradient);
         g.fillRoundedRectangle(bounds.toFloat(), 4.f);
+
+        auto arrowBounds = bounds.reduced(8, 9);
+        arrowBounds.removeFromLeft(104);
+
+        juce::Path arrow;
+        arrow.startNewSubPath(arrowBounds.getTopLeft().toFloat());
+        arrow.lineTo(arrowBounds.getTopRight().toFloat());
+        arrow.lineTo(arrowBounds.getCentreX(), arrowBounds.getBottom());
+        arrow.closeSubPath();
+
+        g.setColour(getColour(Colours::paleBlue));
+        g.fillPath(arrow);
+    }
+
+    void CustomLookAndFeel::positionComboBoxText(juce::ComboBox &box, juce::Label &labelToPosition) {
+        auto bounds = box.getLocalBounds().reduced(10, 6);
+        bounds.removeFromRight(12);
+        labelToPosition.setBounds(bounds);
+        labelToPosition.setJustificationType(juce::Justification::centred);
+        labelToPosition.setFont(interBold());
+        labelToPosition.setFont(getComboBoxFont(box));
+    }
+
+    juce::PopupMenu::Options CustomLookAndFeel::getOptionsForComboBoxPopupMenu(juce::ComboBox &box, juce::Label &label) {
+        return LookAndFeel_V4::getOptionsForComboBoxPopupMenu(box, label)
+            .withStandardItemHeight(24)
+            .withMinimumWidth(132);
+    }
+
+    juce::Font CustomLookAndFeel::getPopupMenuFont() {
+        return interMedium().withPointHeight(12.f);
     }
 
     juce::FontOptions CustomLookAndFeel::interMedium() {
